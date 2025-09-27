@@ -17,41 +17,15 @@ public class SplitBST {
     }
 
     public TreeNode[] splitBST(TreeNode root, int target) {
-        // Base Case: An empty tree splits into two empty trees.
-        if (root == null) {
-            return new TreeNode[]{null, null};
-        }
-
-        // Case 1: The root's value is greater than the target.
+        if (root == null) return new TreeNode[] {null, null};
         if (root.val > target) {
-            // The root and its entire right subtree belong in the "greater" part.
-            // We need to split the left subtree to find out what might also belong
-            // in the "greater" part and what belongs in the "smaller" part.
             TreeNode[] splitFromLeft = splitBST(root.left, target);
-            
-            // The "smaller" part from the left split is our final "smaller" tree.
-            TreeNode smallerEqualTree = splitFromLeft[0];
-            
-            // The "greater" part from the left split becomes the new left child of our root.
-            TreeNode greaterTree = root;
-            greaterTree.left = splitFromLeft[1];
-            
-            return new TreeNode[]{smallerEqualTree, greaterTree};
-        } 
-        // Case 2: The root's value is less than or equal to the target.
-        else {
-            // The root and its entire left subtree belong in the "smaller" part.
-            // We need to split the right subtree.
+            root.left = splitFromLeft[1];
+            return new TreeNode[] {splitFromLeft[0], root};
+        } else {
             TreeNode[] splitFromRight = splitBST(root.right, target);
-            
-            // The "smaller" part from the right split becomes the new right child of our root.
-            TreeNode smallerEqualTree = root;
-            smallerEqualTree.right = splitFromRight[0];
-            
-            // The "greater" part from the right split is our final "greater" tree.
-            TreeNode greaterTree = splitFromRight[1];
-            
-            return new TreeNode[]{smallerEqualTree, greaterTree};
+            root.right = splitFromRight[0];
+            return new TreeNode[] {root, splitFromRight[1]};
         }
     }
 

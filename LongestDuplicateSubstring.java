@@ -23,7 +23,26 @@ public class LongestDuplicateSubstring {
         return res;
     }
 
-    static String computeRepeatingSubstring(String s, int k) {
+    private static String computeRepeatingSubstring(String s, int k) {
+        // A set to store the substrings of length k we've already seen.
+        Set<String> seen = new HashSet<>();
+        
+        // Iterate through all possible starting positions for a substring of length k.
+        for (int i = 0; i <= s.length() - k; i++) {
+            String substring = s.substring(i, i + k);
+            
+            // If we can't add the substring to the set, it's because we've seen it before.
+            if (!seen.add(substring)) {
+                // This is our duplicate!
+                return substring;
+            }
+        }
+        
+        // If we finish the loop, no duplicates of length k were found.
+        return null;
+    }
+
+    static String computeRepeatingSubstringRollingHash(String s, int k) {
         if (k == 0) return "";
         if (k >= s.length()) return null;
         
